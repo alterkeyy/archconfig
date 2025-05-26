@@ -1,0 +1,14 @@
+zsh -ic 'ls;exit'
+zsh -ic 'lzd;exit'
+zsh -ic 'echo hh;exit'
+zsh -ic 'ls;read'
+
+j
+zsh -ic 'hh;exit'
+zsh -ic 'l;exit'
+zsh -ic 'l;read'
+zsh -ic 'git clone https://github.com/elkowar/eww
+;read'
+zsh -ic 'cargo build --release --no-default-features --features=wayland
+;read'
+

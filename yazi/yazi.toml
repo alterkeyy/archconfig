@@ -1,0 +1,388 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+ratio = [1, 4, 3]
+sort_by = "alphabetical"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+sort_translit = false
+# linemode = "size_and_mtime"
+linemode = "none"
+show_hidden = false
+show_symlink = true
+scrolloff = 151
+mouse_events = ["click", "scroll"]
+title_format = "Yazi: {cwd}"
+
+[preview]
+wrap = "yes"
+tab_size = 2
+max_width = 2000
+max_height = 2000
+cache_dir = ""
+image_delay = 30
+image_filter = "triangle"
+image_quality = 75
+sixel_fraction = 15
+ueberzug_scale = 1
+ueberzug_offset = [0, 0, 0, 0]
+
+[opener]
+edit = [
+	{ run = '${EDITOR:-code} "$@"', desc = "code", block = true, for = "unix" },
+	{ run = '${EDITOR:-vim} "$@"', desc = "vim", block = true, for = "unix" },
+	{ run = '${EDITOR:-nvim} "$@"', desc = "neovim", block = true, for = "unix" },
+	# { run = 'code %*', orphan = true, desc = "code", for = "windows" },
+	# { run = 'code -w %*', block = true, desc = "code (block)", for = "windows" },
+]
+open = [
+	# { run = 'xdg-open "$1"', desc = "Xopen", for = "linux" },
+	{ run = 'handlr open "$1"', desc = "handlr(default)", for = "linux" },
+	# { run = 'open "$@"', desc = "Open", for = "macos" },
+	# { run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
+]
+reveal = [
+	# { run = 'xdg-open "$(dirname "$1")"', desc = "Reveal", for = "linux" },
+	{ run = '''exiftool "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show EXIF", for = "unix" },
+	# { run = 'open -R "$1"', desc = "Reveal", for = "macos" },
+	# { run = 'explorer /select,"%1"', orphan = true, desc = "Reveal", for = "windows" },
+]
+extract = [
+	# { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
+	# { run = 'ya pub extract --list %*', desc = "Extract here", for = "windows" },
+	# add by ouch plugin
+	# { run = 'ouch d -y "%*"', desc = "Extract here with ouch", for = "windows" },
+	{ run = 'ouch d -y "$@"', desc = "Extract here with ouch", for = "unix" },
+]
+mdopen = [
+	{ run = '${EDITOR:-code} "$@"', desc = "code", block = true, for = "unix" },
+	{ run = 'typora "$@" &', desc = "typora", block = true, for = "unix" },
+	{ run = 'obsidian "$@" &', desc = "md.obsidian.Obsidian", block = true, for = "unix" },
+	# { run = '${EDITOR:-code} "$@"', desc = "code", block = true, for = "unix" },
+]
+video = [
+	{ run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
+	{ run = 'vlc "$@"', orphan = true, for = "unix" },
+	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
+	# { run = 'mpv --force-window %*', orphan = true, for = "windows" },
+]
+music = [
+	{ run = 'mpv  --force-window "$@"', orphan = true, for = "unix" },
+	{ run = 'amberol "$@"', desc = "amberol", orphan = true, for = "unix" },
+	{ run = 'g4music "$@"', desc = "gapless", orphan = true, for = "unix" },
+	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
+]
+image = [
+	{ run = 'imv "$@"', orphan = true, for = "unix" },
+	{ run = 'gimp "$@"', orphan = true, for = "unix" },
+	{ run = 'nsxiv "$@"', orphan = true, for = "unix" },
+]
+pdfopen = [
+	{ run = 'microsoft-edge-stable "$@"', desc = "edge", orphan = true, for = "unix" },
+	{ run = 'wpspdf "$@"', orphan = true, for = "unix" },
+	{ run = 'papers "$@"', orphan = true, for = "unix" },
+	{ run = 'zathura "$@"', orphan = true, for = "unix" },
+]
+webopen = [
+	{ run = 'microsoft-edge-stable "$@"', desc = "Edge", orphan = true, for = "unix" },
+	{ run = '${EDITOR:-code} "$@"', desc = "code", block = true, for = "unix" },
+	{ run = '${EDITOR:-nvim} "$@"', desc = "neovim", block = true, for = "unix" },
+	{ run = '${EDITOR:-vim} "$@"', desc = "vim", block = true, for = "unix" },
+	{ run = 'zen-browser "$@"', desc = "zen", orphan = true, for = "unix" },
+	{ run = 'qutebrowser "$@"', desc = "qutebrowser", orphan = true, for = "unix" },
+]
+
+
+[open]
+rules = [
+	# Folder
+	{ name = "*/", use = [
+		"edit",
+		# "open",
+		"reveal",
+	] },
+	# webopen
+	{ mime = "text/html", use = [
+		"webopen",
+		"open",
+		# "edit",
+		# "reveal",
+	] },
+	# markdown
+	{ mime = "text/markdown", use = [
+		"mdopen",
+		"reveal",
+	] },
+	# Text
+	{ mime = "text/*", use = [
+		"open",
+		"edit",
+		"reveal",
+	] },
+	# Image
+	{ mime = "image/*", use = [
+		"image",
+		"reveal",
+	] },
+	# audio
+	{ mime = "audio/*", use = [
+		"music",
+		"reveal",
+	] },
+	# video
+	{ mime = "video/*", use = [
+		"video",
+		"reveal",
+	] },
+	# pdf
+	{ mime = "application/pdf", use = [
+		"pdfopen",
+		"reveal",
+	] },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [
+		"extract",
+		"reveal",
+	] },
+	# JSON
+	{ mime = "application/{json,ndjson}", use = [
+		"edit",
+		"reveal",
+	] },
+	# Font
+	{ mime = "font/*", use = [
+		"edit",
+		"reveal",
+	] },
+	{ mime = "application/ms-opentype", use = [
+		"edit",
+		"reveal",
+	] },
+	# Virtual Disk / Disk Image
+	{ mime = "application/{iso9660-image,qemu-disk,ms-wim,apple-diskimage}", use = [
+		"extract",
+		"reveal",
+	] },
+	{ mime = "application/virtualbox-{vhd,vhdx}", use = [
+		"extract",
+		"reveal",
+	] },
+	{ name = "*.{img,fat,ext,ext2,ext3,ext4,squashfs,ntfs,hfs,hfsx}", use = [
+		"extract",
+		"reveal",
+	] },
+	{ mime = "*/javascript", use = [
+		"edit",
+		"reveal",
+	] },
+	# Empty file
+	{ mime = "inode/empty", use = [
+		"edit",
+		"reveal",
+	] },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [
+		"extract",
+		"reveal",
+	] },
+	{ mime = "application/{debian*-package,redhat-package-manager,rpm,android.package-archive}", use = [
+		"extract",
+		"reveal",
+	] },
+	{ name = "*.{AppImage,appimage}", use = [
+		"extract",
+		"reveal",
+	] },
+	# Fallback
+	{ name = "*", use = [
+		"open",
+		"reveal",
+	] },
+]
+
+[tasks]
+micro_workers = 10
+macro_workers = 10
+bizarre_retry = 3
+image_alloc = 536870912  # 512MB
+image_bound = [0, 0]
+suppress_preload = false
+
+[plugin]
+prepend_previewers = [
+	#mdcat,glow are worse than rich-preview,they are laggy
+	# { name = "*.md", run = "mdcat" },
+	# { name = "*.md", run = "glow" },
+	{ name = "*/", run = "eza-preview" },
+	{ mime = "audio/*", run = "exifaudio" },
+	{ mime = "{image,audio,video}/*", run = "mediainfo" },
+	{ mime = "application/subrip", run = "mediainfo" },
+
+	# Using hexyl as the fallback previewer for files.Binary.this is useless
+	# { name = "*", run = "hexyl" },
+
+	# Archive previewer
+	{ mime = "application/*zip", run = "ouch" },
+	{ mime = "application/x-tar", run = "ouch" },
+	{ mime = "application/x-bzip2", run = "ouch" },
+	{ mime = "application/x-7z-compressed", run = "ouch" },
+	{ mime = "application/x-rar", run = "ouch" },
+	{ mime = "application/x-xz", run = "ouch" },
+	# rich
+	{ name = "*.csv", run = "rich-preview" },   # for csv files
+	{ name = "*.md", run = "rich-preview" },    # for markdown (.md) files
+	{ name = "*.rst", run = "rich-preview" },   # for restructured text (.rst) files
+	{ name = "*.ipynb", run = "rich-preview" }, # for jupyter notebooks (.ipynb)
+	{ name = "*.json", run = "rich-preview" },  # for json (.json) files
+	# { name = "*.lang_type", run = "rich-preview"} # for particular language files eg. .py, .go., .lua, etc.
+]
+
+prepend_fetchers = [
+	{ id = "git", name = "*", run = "git" },
+	{ id = "git", name = "*/", run = "git" },
+]
+
+
+spotters = [
+	{ name = "*/", run = "folder" },
+	# Code
+	{ mime = "text/*", run = "code" },
+	{ mime = "*/{xml,javascript,wine-extension-ini}", run = "code" },
+	# Image
+	{ mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
+	{ mime = "image/*", run = "image" },
+	# Video
+	{ mime = "video/*", run = "video" },
+	# Fallback
+	{ name = "*", run = "file" },
+]
+preloaders = [
+	# Image
+	{ mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
+	{ mime = "image/*", run = "image" },
+	# Video
+	{ mime = "video/*", run = "video" },
+	# PDF
+	{ mime = "application/pdf", run = "pdf" },
+	# Font
+	{ mime = "font/*", run = "font" },
+	{ mime = "application/ms-opentype", run = "font" },
+	# Do not preload MTP mount_point, cause they are very slow.
+	# Environment variable won't work here.
+	# Using absolute path instead.
+	{ name = "/home/alt/Media/**/*", run = "noop" },
+	#... the rest of preloaders
+]
+previewers = [
+	# Allow to preview folder.
+	{ name = "*/", run = "folder", sync = true },
+	# Do not preview MTP mount_point (uncomment to except text file)
+	#  { mime = "{text/*,application/x-subrip}", run = "code" },
+	# Using absolute path.
+	{ name = "/home/alt/Media/**/*", run = "noop" },
+	#... the rest of previewers
+
+	{ name = "*/", run = "folder", sync = true },
+	# Code
+	{ mime = "text/*", run = "code" },
+	{ mime = "*/{xml,javascript,wine-extension-ini}", run = "code" },
+	# JSON
+	{ mime = "application/{json,ndjson}", run = "json" },
+	# Image
+	{ mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
+	{ mime = "image/*", run = "image" },
+	# Video
+	{ mime = "video/*", run = "video" },
+	# PDF
+	{ mime = "application/pdf", run = "pdf" },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", run = "archive" },
+	{ mime = "application/{debian*-package,redhat-package-manager,rpm,android.package-archive}", run = "archive" },
+	{ name = "*.{AppImage,appimage}", run = "archive" },
+	# Virtual Disk / Disk Image
+	{ mime = "application/{iso9660-image,qemu-disk,ms-wim,apple-diskimage}", run = "archive" },
+	{ mime = "application/virtualbox-{vhd,vhdx}", run = "archive" },
+	{ name = "*.{img,fat,ext,ext2,ext3,ext4,squashfs,ntfs,hfs,hfsx}", run = "archive" },
+	# Font
+	{ mime = "font/*", run = "font" },
+	{ mime = "application/ms-opentype", run = "font" },
+	# Empty file
+	{ mime = "inode/empty", run = "empty" },
+	# Fallback
+	{ name = "*", run = "file" },
+]
+
+[input]
+cursor_blink = false
+
+# cd
+cd_title = "Change directory:"
+cd_origin = "top-center"
+cd_offset = [0, 2, 50, 3]
+
+# create
+create_title = ["Create:", "Create (dir):"]
+create_origin = "top-center"
+create_offset = [0, 2, 50, 3]
+
+# rename
+rename_title = "Rename:"
+rename_origin = "hovered"
+rename_offset = [0, 1, 50, 3]
+
+# filter
+filter_title = "Filter:"
+filter_origin = "top-center"
+filter_offset = [0, 2, 50, 3]
+
+# find
+find_title = ["Find next:", "Find previous:"]
+find_origin = "top-center"
+find_offset = [0, 2, 50, 3]
+
+# search
+search_title = "Search via {n}:"
+search_origin = "top-center"
+search_offset = [0, 2, 50, 3]
+
+# shell
+shell_title = ["Shell:", "Shell (block):"]
+shell_origin = "top-center"
+shell_offset = [0, 2, 50, 3]
+
+[confirm]
+# trash
+trash_title = "Trash {n} selected file{s}?"
+trash_origin = "center"
+trash_offset = [0, 0, 70, 20]
+
+# delete
+delete_title = "Permanently delete {n} selected file{s}?"
+delete_origin = "center"
+delete_offset = [0, 0, 70, 20]
+
+# overwrite
+overwrite_title = "Overwrite file?"
+overwrite_content = "Will overwrite the following file:"
+overwrite_origin = "center"
+overwrite_offset = [0, 0, 50, 15]
+
+# quit
+quit_title = "Quit?"
+quit_content = "The following task is still running, are you sure you want to quit?"
+quit_origin = "center"
+quit_offset = [0, 0, 50, 15]
+
+[pick]
+open_title = "Open with:"
+open_origin = "hovered"
+open_offset = [0, 1, 50, 7]
+
+[which]
+sort_by = "none"
+sort_sensitive = false
+sort_reverse = false
+sort_translit = false

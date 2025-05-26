@@ -1,0 +1,71 @@
+[manager]
+prepend_keymap = [
+  { on   = "<A-p>", run  = "plugin max-preview", desc = "Maximize or restore preview"},
+  # { on = ["<A-p>"], run = "plugin hide-preview", desc = "Hide or show preview" },
+  { on = [ "c", "m" ], run = "plugin chmod", desc = "Chmod on selected files" },
+  { on = ["<A-f>"], run = "plugin jump-to-char", desc = "Jump to char" },
+  { on = ["F"], run  = "plugin smart-filter", desc = "Smart filter"},
+  # glow.yazi
+  # { on = ["<C-e>"], run = "seek 5" },
+  # { on = ["<C-y>"], run = "seek -5" },
+  { on = [ "E" ], run = "plugin eza-preview",  desc = "Toggle tree/list dir preview" },
+  { on = [ "i" ], run = "plugin eza-preview -- '--inc-level'", desc = "Increment tree level" },
+  { on = [ "I" ], run = "plugin eza-preview -- '--dec-level'", desc = "Decrement tree level" },
+  { on = [ "$" ], run = "plugin eza-preview -- '--toggle-follow-symlinks'", desc = "Toggle tree follow symlinks" },
+  { on = ["C"], run = "plugin ouch --args=zip", desc = "Compress with ouch"},
+  { on = [ "c", "a" ], run = "plugin compress", desc = "Archive selected files" },
+  { on = [ ",", "," ], run  = "plugin what-size", desc = "Calc size of selection or cwd" },
+  { on = ["<C-d>"], run  = "plugin diff", desc = "Diff the selected with the hovered file"},
+  { on = ["<A-y>"], run = "plugin copy-file-contents", desc = "Copy contents of file"},
+  { on = ["<C-y>"], run = ["plugin system-clipboard"]},
+  { on = ["l"], run  = "plugin smart-enter", desc = "Enter the child directory, or open the file"},
+  { on = ["M"], run = "plugin mount"},
+  { on = ["g", "i" ], run  = "plugin lazygit", desc = "run lazygit"},
+  { on = ["g", "m"], run = "cd /mnt/windows/Users/29635", desc = "goto /mnt/windows"},
+  { on = ["g", "r"], run = "cd /run/media/alt", desc = "goto /run/media"},
+  { on = ["g", "p"], run = "cd /home/alt/projects", desc = "goto projects"},
+  { on = ["u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
+  # { on = ["d", "u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
+  { on = ["<C-1>"], run = "plugin toggle-view -- parent", desc = "Toggle parent" },
+  { on = ["<C-2>"], run = "plugin toggle-view -- current", desc = "Toggle current" },
+  { on = ["<C-3>"], run = "plugin toggle-view -- preview", desc = "Toggle preview" },
+  { on = [ "'", "h" ],run = "plugin custom-shell -- history", desc = "Show Custom-shell history"},
+  { on = [ "'", ":" ], run = 'plugin custom-shell -- auto --interactive --block --wait',desc = "custom-shell as default, interactive, block"},
+  { on = [ "'", "'" ], run = "plugin yamb -- jump_by_fzf", desc = "Jump bookmark by fzf" },
+  { on = [ "'", "a" ], run = "plugin yamb -- save", desc = "Add bookmark" },
+  { on = [ "'", "g" ], run = "plugin yamb -- jump_by_key", desc = "Jump bookmark by key" },
+  { on = [ "'", "d" ], run = "plugin yamb -- delete_by_key", desc = "Delete bookmark by key" },
+  { on = [ "'", "D" ], run = "plugin yamb -- delete_by_fzf", desc = "Delete bookmark by fzf" },
+  { on = [ "'", "A" ], run = "plugin yamb -- delete_all", desc = "Delete all bookmarks" },
+  { on = [ "'", "r" ], run = "plugin yamb -- rename_by_key", desc = "Rename bookmark by key" },
+  { on = [ "'", "R" ], run = "plugin yamb -- rename_by_fzf", desc = "Rename bookmark by fzf" },
+  # sudo cp/mv
+  { on = ["R", "p", "p"], run = "plugin sudo -- paste", desc = "sudo paste" },
+  # sudo cp/mv --force
+  { on = ["R", "P"], run = "plugin sudo -- paste --force", desc = "sudo paste" },
+  # sudo mv
+  { on = ["R", "r"], run = "plugin sudo -- rename", desc = "sudo rename" },
+  # sudo ln -s (absolute-path)
+  { on = ["R", "p", "l"], run = "plugin sudo -- link", desc = "sudo link" },
+  # sudo ln -s (relative-path)
+  { on = ["R", "p", "r"], run = "plugin sudo -- link --relative", desc = "sudo link relative path" },
+  # sudo ln
+  { on = ["R", "p", "L"], run = "plugin sudo -- hardlink", desc = "sudo hardlink" },
+  # sudo touch/mkdir
+  { on = ["R", "a"], run = "plugin sudo -- create", desc = "sudo create" },
+  # sudo trash
+  { on = ["R", "d"], run = "plugin sudo -- remove", desc = "sudo trash" },
+  # sudo delete
+  { on = ["R", "D"], run = "plugin sudo -- remove --permanently", desc = "sudo delete" },
+  { on = [ "H" ], run = "plugin searchjump -- autocd", desc = "searchjump mode"},
+  {on   = ["P"], run  = "plugin sxiv-easymotion", desc = "Preview images in sxiv"},
+  # simple-mtpfs plugin
+  # { on = [ "<A-m>", "m" ], run = "plugin simple-mtpfs -- select-then-mount", desc = "Select device then mount" },
+  # or this if you want to jump to mountpoint after mounted
+  { on = [ "<A-m>", "m" ], run = "plugin simple-mtpfs -- select-then-mount --jump", desc = "Select device to mount and jump to its mount point" },
+  # This will remount device under cwd (e.g. cwd = $HOME/Media/1_ZTEV5/Downloads/, device mountpoint = $HOME/Media/1_ZTEV5/)
+  { on = [ "<A-m>", "r" ], run = "plugin simple-mtpfs -- remount-current-cwd-device", desc = "Remount device under cwd" },
+  { on = [ "<A-m>", "u" ], run = "plugin simple-mtpfs -- select-then-unmount", desc = "Select device then unmount" },
+  { on = [ "<A-m>", "g" ], run = "plugin simple-mtpfs -- jump-to-device", desc = "Select device then jump to its mount point" },
+  { on = [ "`", "`" ], run = "plugin simple-mtpfs -- jump-back-prev-cwd", desc = "Jump back to the position before jumped to device" }
+]

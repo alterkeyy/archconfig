@@ -1,0 +1,16 @@
+[general]
+# Older systems show significant CPU use with default framerate
+# Setting maximum framerate to 30  
+# You can increase the value if you wish
+framerate = 30
+bars = 10
+
+[input]
+method = pulse
+source = auto
+
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 7

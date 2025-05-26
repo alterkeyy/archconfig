@@ -1,0 +1,122 @@
+{
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
+        "all-outputs": true,
+        "warp-on-scroll": true,
+        "format": "{name}",
+        "format-icons": {
+            "urgent": "",
+            "active": "",
+            "default": ""
+        }
+    },
+    "hyprland/window": {
+        "format": "{class}",
+        "rewrite": {
+            // ^$ match all empty window
+            "(^$)": "🤪🫵😮‍💨🥰🤓💩🥹🤔🫠",
+            "(.*)-edge": "   edge",
+            "(.*)code": "    vscode ",
+            "(.*)kitty": "    kitty",
+            "(.*)spotify": "   spotify",
+            "(.*)steam": "   steam",
+            "(.*)obspro(.*)": "   obs",
+            "(.*)obsidian": "🖋  obsidian",           
+            "(.*)mpv": "  mpv",
+            "(.*)thunar": "🗂  thunar",
+            "(.*)typora": "📃Typora",
+            "(.*)telegram(.*)": "   telegram"
+
+            // "(.*)mpv": " 🎶📸  mpv"
+
+        },
+        "separate-outputs": true
+    },
+    "group/cpu_temp": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": true
+        },
+        "modules": [
+            "cpu",
+            "temperature"
+        ]
+    },
+    // CPU
+    "cpu": {
+        "format": "  {usage}% ",
+        "interval": 5
+        // "tooltip-format":"{avg_frequency}"//this is uesless
+        // "on-click": "~/.config/ml4w/settings/system-monitor.sh"
+    },
+    //temp
+    "temperature": {
+        "thermal-zone": 1,
+        "format": "{temperatureC}°C ",
+        "critical-threshold": 80,
+        "format-critical": "{temperatureC}°C "
+    },
+    //gpu
+    "custom/nvidia": {
+        "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\)/ \\1%/g'",
+        "format": "G {}",
+        "interval": 2
+    },
+    // Memory
+    "memory": {
+        "interval": 5,
+        "format": "M {}% "
+        // "on-click": "~/.config/ml4w/settings/system-monitor.sh"
+    },
+    // Harddisc space used
+    "disk": {
+        "interval": 10,
+        "format": "  {percentage_used}% ",
+        "path": "/"
+        // "on-click": "~/.config/mddl4w/settings/system-monitor.sh"
+    },
+    "group/speed": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": true
+        },
+        "modules": [
+            "network#speeddown",
+            "network#speedup"
+        ]
+    },
+    "network#speeddown": {
+        // "interface": "wlp2s0",//auto detect
+        "interval": 2,
+        "format": "{{   {bandwidthDownBytes}}", //This format is used when other formats aren't specified.
+        "format-wifi": "  {bandwidthDownBytes}",
+        "format-ethernet": "{   {bandwidthDownBytes}",
+        "format-disconnected": "", //An empty format will hide the module.
+        "tooltip": false,
+        // "tooltip-format": "",
+        // "tooltip-format-wifi": "down:{bandwidthDownBytes}\nup:{bandwidthUpBytes}\ntotal:{bandwidthTotalBytes}",
+        // "tooltip-format-ethernet": "{ifname} ",
+        // "tooltip-format-disconnected": "Disconnected",
+        "max-length": 60
+    },
+    "network#speedup": {
+        // "interface": "wlp2s0",//auto detect
+        "interval": 2,
+        "format": "{{  {bandwidthUpBytes}}", //This format is used when other formats aren't specified.
+        "format-wifi": "  {bandwidthUpBytes}",
+        "format-ethernet": "{  {bandwidthUpBytes}",
+        "format-disconnected": "", //An empty format will hide the module.
+        "tooltip": false,
+        // "tooltip-format": "",
+        // "tooltip-format-wifi": "down:{bandwidthDownBytes}\nup:{bandwidthUpBytes}\ntotal:{bandwidthTotalBytes}",
+        // "tooltip-format-ethernet": "{ifname} ",
+        // "tooltip-format-disconnected": "Disconnected",
+        "max-length": 60
+    }
+}
